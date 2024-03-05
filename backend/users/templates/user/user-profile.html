@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Информация о пользователе -->
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Пример: Фотография профиля -->
+            <img src="path/to/profile-picture.jpg" alt="Profile Picture" class="profile-picture">
+        </div>
+        <div class="col-md-8">
+            <!-- Пример: Имя пользователя -->
+            <h2>{{user.username}}</h2>
+            <p><strong>Email:</strong> your.email@example.com</p>
+            <!-- Добавьте другие поля пользователя, если необходимо -->
+        </div>
+    </div>
+
+    <ul class="list-group" id="quote-list">
+        <h3>User Quotes</h3>
+        {% for quote in quotes %}
+        {% if not quote.hide_creator %}
+        <li class="list-group-item quote-item">
+            <span class="quote-text">" {{quote.title}}</span>
+            <br>
+            <span class="small author-info">{{quote.author}}</span>
+            <a href="{% url 'like-quote' quote.id %}" class="float-right like-info" style="color: black;">
+                {% if request.user in quote.likes.all %}
+                <i class="fas fa-heart like-icon-active"></i>
+                {% else %}
+                <i class="far fa-heart like-icon"></i>
+                {% endif %}
+                <span class="like-count">{{quote.likes.count}}</span>
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <!-- Добавьте еще цитат, если необходимо -->
+    </ul>
+
+    <!-- Дополнительные разделы профиля (по вашему выбору) -->
+    <!-- Пример: Статистика, активность, настройки и т.д. -->
+
+</div>
+{% endblock %}

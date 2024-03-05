@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="search-container">
+            <form class="analysis-form" method="POST">
+                {% csrf_token %}
+                <h2 class="form-title">Выберите сайт и вариант анализа</h2>
+
+                <div class="sites-section">
+                    <div class="site-card">
+                        <input type="radio" id="otodom" name="site" class="site-radio" value="otodom" required>
+                        <label for="otodom" class="site-label">
+                            <img src="site1-logo.png" alt="Site 1 Logo" class="site-card__logo">
+                            <p class="site-card__description">otodom</p>
+                        </label>
+                    </div>
+                    <div class="site-card">
+                        <input type="radio" id="site2" name="site" class="site-radio" value="site2" disabled>
+                        <label for="site2" class="site-label">
+                            <img src="site2-logo.png" alt="Site 2 Logo" class="site-card__logo">
+                            <p class="site-card__description">Описание сайта 2</p>
+                        </label>
+                    </div>
+                    <!-- Добавьте карточки для остальных сайтов -->
+                </div>
+
+                <div class="analysis-options-section">
+                    <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required disabled>
+                    <label for="ai" class="analysis-label">Анализ при помощи искусственного интеллекта (бета)</label>
+                    <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">
+                    <label for="manual" class="analysis-label">Анализ при помощи алгоритма</label>
+                </div>
+
+                <div class="results-options-section">
+                    <label for="offers-amount" class="offers-amount__label">Количество актуальных предложений:</label>
+                    <input type="range" id="offers-amount" name="offers-amount" min="1" max="10" value="1"
+                           class="offers-amount required">
+                    <output for="offers-amount" class="offers-amount__value">1</output>
+                </div>
+
+                <button type="submit" class="start-search-button">Начать поиск</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const siteCards = document.querySelectorAll('.site-card');
+            const analysisLabels = document.querySelectorAll('.analysis-label');
+            const resultsSlider = document.getElementById('offers-amount');
+            const resultsValue = document.querySelector('.offers-amount__value');
+            const startSearchButton = document.querySelector('.start-search-button');
+
+            function selectCard() {
+                siteCards.forEach(card => {
+                    card.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                updateSearchButtonState();
+            }
+
+            function updateSearchButtonState() {
+                const siteSelected = document.querySelector('.site-card.selected');
+                const analysisSelected = document.querySelector('.analysis-label.selected');
+                const isSliderValid = resultsSlider.checkValidity();
+
+                if (siteSelected && analysisSelected && isSliderValid) {
+                    startSearchButton.classList.remove('disabled');
+                } else {
+                    startSearchButton.classList.add('disabled');
+                }
+            }
+
+            siteCards.forEach(card => {
+                card.addEventListener('click', selectCard);
+            });
+
+            analysisLabels.forEach(label => {
+                label.addEventListener('click', function () {
+                    analysisLabels.forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    updateSearchButtonState();
+                });
+            });
+
+            resultsSlider.addEventListener('input', function () {
+                resultsValue.textContent = this.value;
+                updateSearchButtonState();
+            });
+
+            // Добавляем обработчики событий для выбора способа анализа
+            const analysisRadios = document.querySelectorAll('.analysis-radio');
+            analysisRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    analysisLabels.forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    const labelForRadio = document.querySelector(`label[for=${this.id}]`);
+                    labelForRadio.classList.add('selected');
+                    updateSearchButtonState();
+                });
+            });
+
+            // Изначально задаем состояние кнопки поиска
+            updateSearchButtonState();
+        });
+    </script>
+
+{% endblock %}

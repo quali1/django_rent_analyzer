@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="welcome-section">
+    <div class="welcome-section__content">
+        <h1 class="welcome-section__title">Добро пожаловать в мир недвижимости!</h1>
+        <p class="welcome-section__message">Найдите свой идеальный дом с нами. Мы предлагаем широкий выбор квартир, домов и коммерческой недвижимости по всей стране. Позвольте нам помочь вам найти место, которое вы будете называть своим домом.</p>
+        <form class="welcome-section__form">
+            <input type="text" class="welcome-section__input" placeholder="Начните поиск здесь...">
+            <button class="welcome-section__button">Найти</button>
+        </form>
+    </div>
+</section>
+
+<section class="info-section">
+    <div class="info-section__content">
+        <h2 class="info-section__title">О нашем сервисе</h2>
+        <p class="info-section__description">Мы - ваш надежный партнер в поиске недвижимости. Наша цель - сделать процесс поиска и покупки жилья простым и удобным. Мы предлагаем обширную базу данных объектов недвижимости, а также персонализированный сервис для каждого клиента.</p>
+        <a href="{% url 'analyzer-form' %}" class="info-section__start-button">Начать поиск</a>
+    </div>
+</section>
+
+<section class="why-us-section">
+    <div class="why-us-section__content">
+        <h2 class="why-us-section__title">Почему выбирают нас</h2>
+        <ul class="why-us-section__advantages">
+            <li class="why-us-section__advantage">Большой выбор недвижимости</li>
+            <li class="why-us-section__advantage">Простой и удобный поиск</li>
+            <li class="why-us-section__advantage">Персонализированный сервис</li>
+            <li class="why-us-section__advantage">Надежность и безопасность</li>
+        </ul>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="testimonials-section__content">
+        <h2 class="testimonials-section__title">Отзывы клиентов</h2>
+        <div class="testimonials-section__slider">
+            <!-- Здесь будет слайдер с отзывами -->
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer__content">
+        <div class="footer__contact-info">
+            <p class="footer__phone">Телефон: +1234567890</p>
+            <p class="footer__email">Email: info@example.com</p>
+            <p class="footer__address">Адрес: ул. Недвижимости, д. 1, г. Мегаполис</p>
+        </div>
+        <div class="footer__social-links">
+            <a href="#" class="footer__social-link">Facebook</a>
+            <a href="#" class="footer__social-link">Twitter</a>
+            <a href="#" class="footer__social-link">Instagram</a>
+        </div>
+        <div class="footer__legal">
+            <a href="#" class="footer__privacy-policy">Политика конфиденциальности</a>
+            <a href="#" class="footer__terms-of-service">Пользовательское соглашение</a>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}
