@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -12,7 +13,7 @@
                     <div class="site-card">
                         <input type="radio" id="otodom" name="site" class="site-radio" value="otodom" required>
                         <label for="otodom" class="site-label">
-                            <img src="site1-logo.png" alt="Site 1 Logo" class="site-card__logo">
+                            <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
                             <p class="site-card__description">otodom</p>
                         </label>
                     </div>
