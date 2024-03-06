@@ -10,16 +10,15 @@ class DataAnalyzer:
 
     @staticmethod
     def calculate_profitability(apartments, amount=1):
-        # Calculate profitability...
-        # for apartment in apartments:
-        #     apartment['price'] = DataAnalyzer.extract_numbers(apartment['price'])[0]
-        #     apartment['price_per_sqm'] = DataAnalyzer.extract_numbers(apartment['price_per_sqm'])[0]
+        print(apartments)
 
         for apartment in apartments:
             apartment['price'] = apartment['price']
             apartment['price_per_sqm'] = apartment['price_per_sqm']
 
         sorted_apartments = sorted(apartments, key=lambda x: x['price_per_sqm'])
+
+        print(sorted_apartments)
         return sorted_apartments[:amount]
 
     @staticmethod
@@ -38,3 +37,12 @@ class DataAnalyzer:
             return most_profitable
         else:
             pass
+
+    @staticmethod
+    def find_profitable_apartments_advanced(apartments, amount=1):
+        for apartment in apartments:
+            apartment['profitability_score'] = apartment['price_per_sqm'] * 0.4 + apartment['rooms'] * 0.3 + apartment[
+                'area'] * 0.2 + apartment['floor'] * 0.1
+
+        sorted_apartments = sorted(apartments, key=lambda x: x['profitability_score'], reverse=True)
+        return sorted_apartments[:amount]

@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
+from analyzer.models import OtodomData
+
 
 # Create your views here.
 
@@ -21,7 +23,7 @@ def user_login(request):
         else:
             messages.error(request, "Invalid username or password!")
 
-    return render(request, "user/login.html")
+    return render(request, "users/login.html")
 
 
 def user_register(request):
@@ -41,7 +43,7 @@ def user_register(request):
 
     context = {"form": form}
 
-    return render(request, "user/register.html", context)
+    return render(request, "users/register.html", context)
 
 
 @login_required(login_url="home")
@@ -49,3 +51,15 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect("home")
+
+
+def user_profile(request, pk):
+    user = User.objects.get(id=pk)
+    requests = OtodomData.objects.filter(requester=user).all()
+
+    context = {
+        "user": user,
+        "requests": requests,
+    }
+
+    return render(request, "users/user-profile.html", context)

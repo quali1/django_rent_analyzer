@@ -19,6 +19,9 @@ class OtodomData(models.Model):
     request_id = models.CharField(max_length=16, unique=True, primary_key=True)
     offers = models.ManyToManyField(Offer)
     requester = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    site = models.CharField(max_length=32, default="None")
+    method = models.CharField(max_length=124, default="None")
 
     def __str__(self):
         return f'OtodomData {self.request_id}'

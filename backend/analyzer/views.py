@@ -33,7 +33,7 @@ def analyzer_form(request):
             print("Data: ", data)
             print("Request id: ", request_id)
 
-            save_otodom_data_to_database(data, request_id, requester)
+            save_otodom_data_to_database(data, request_id, requester, site, method)
             print("Data saved")
 
             return redirect('analysis', request_id=request_id)
@@ -49,8 +49,8 @@ def display_analysis(request, request_id):
     return render(request, "analyzer/analysis.html", {'offers': offers})
 
 
-def save_otodom_data_to_database(data, request_id, requester):
-    otodom_data = OtodomData.objects.create(request_id=request_id, requester=requester)
+def save_otodom_data_to_database(data, request_id, requester, site, method):
+    otodom_data = OtodomData.objects.create(request_id=request_id, requester=requester, site=site, method=method)
 
     for offer_data in data:
         offer = Offer.objects.create(
