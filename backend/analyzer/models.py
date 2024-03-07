@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Offer(models.Model):
     article_id = models.IntegerField()
     price = models.IntegerField()
@@ -12,16 +13,17 @@ class Offer(models.Model):
     link = models.URLField()
 
     def __str__(self):
-        return f"Offer {self.article_id}"
+        return f"Offer {self.id}"
 
 
 class OtodomData(models.Model):
     request_id = models.CharField(max_length=16, unique=True, primary_key=True)
     offers = models.ManyToManyField(Offer)
+    ai_response = models.TextField(null=True, blank=True)
     requester = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created = models.DateTimeField(auto_now_add=True)
     site = models.CharField(max_length=32, default="None")
     method = models.CharField(max_length=124, default="None")
 
     def __str__(self):
-        return f'OtodomData {self.request_id}'
+        return f'OtodomData {self.request_id} {self.method} {self.requester}'

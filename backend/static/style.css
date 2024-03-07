@@ -404,6 +404,44 @@ body {
     }
 }
 
+
+/* AI analysis section  */
+
+.container.ai {
+    background-color: #343a40;
+    color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.container.ai:hover {
+    box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.25), 0px 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.ai__title {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeIn 2s;
+}
+
+.ai__output {
+    padding: 20px;
+    border-radius: 15px;
+    height: 200px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.1);
+    animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+
 /* Profile section */
 
 .header-title {

@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="analysis-options-section">
-                    <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required disabled>
+                    <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required>
                     <label for="ai" class="analysis-label">Анализ при помощи искусственного интеллекта (бета)</label>
                     <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">
                     <label for="manual" class="analysis-label">Анализ при помощи алгоритма</label>
@@ -93,7 +93,6 @@
                 updateSearchButtonState();
             });
 
-            // Добавляем обработчики событий для выбора способа анализа
             const analysisRadios = document.querySelectorAll('.analysis-radio');
             analysisRadios.forEach(radio => {
                 radio.addEventListener('change', function () {
@@ -106,9 +105,24 @@
                 });
             });
 
-            // Изначально задаем состояние кнопки поиска
             updateSearchButtonState();
         });
     </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.results-options-section').hide(); // Скрываем секцию при загрузке страницы
+    $('input[type=radio][name=method]').change(function() {
+        if (this.value == 'ai') {
+            $('.results-options-section').slideUp(); // Плавное сворачивание
+        }
+        else if (this.value == 'manual') {
+            $('.results-options-section').slideDown(); // Плавное разворачивание
+        }
+    });
+});
+</script>
+
 
 {% endblock %}

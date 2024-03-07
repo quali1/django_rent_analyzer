@@ -16,7 +16,6 @@ def home_page(request):
 @login_required(login_url="login")
 def analyzer_form(request):
     if request.method == "POST":
-        print(request.POST)
         site = request.POST.get('site')
         method = request.POST.get('method')
         offers_amount = int(request.POST.get('offers-amount'))
@@ -28,13 +27,11 @@ def analyzer_form(request):
             request_id = DataFinder.get_request_id(path)
             requester = request.user
 
-            data = DataAnalyzer.analyze_apartments(path, offers_amount, method)
+            data = DataAnalyzer.analyze_apartments(path, 20 if method == "ai" else offers_amount)
+            ai_response = DataAnalyzer.ai_analyzer(offers_amount, data) if method == "ai" else None
 
-            print("Data: ", data)
-            print("Request id: ", request_id)
-
-            save_otodom_data_to_database(data, request_id, requester, site, method)
-            print("Data saved")
+            save_otodom_data_to_database(data, request_id, requester, site, method, ai_response)
+            print(f"{method} analyzer\nRequest id: {request_id}\nRequester: {requester}")
 
             return redirect('analysis', request_id=request_id)
 
@@ -46,11 +43,17 @@ def display_analysis(request, request_id):
     offers = data.offers.all()
     print("Offers: ", offers)
 
-    return render(request, "analyzer/analysis.html", {'offers': offers})
+    if data.method == 'manual':
+        context = {'offers': offers}
+        return render(request, "analyzer/manual-analysis.html", context)
+    elif data.method == 'ai':
+        context = {"data": data}
+        return render(request, "analyzer/ai-analysis.html", context)
 
 
-def save_otodom_data_to_database(data, request_id, requester, site, method):
-    otodom_data = OtodomData.objects.create(request_id=request_id, requester=requester, site=site, method=method)
+def save_otodom_data_to_database(data, request_id, requester, site, method, ai_response=None):
+    otodom_data = OtodomData.objects.create(request_id=request_id, requester=requester, site=site, method=method,
+                                            ai_response=ai_response)
 
     for offer_data in data:
         offer = Offer.objects.create(
