@@ -26,4 +26,4 @@ class OtodomData(models.Model):
     method = models.CharField(max_length=124, default="None")
 
     def __str__(self):
-        return f'OtodomData {self.request_id} {self.method} {self.requester}'
+        return f'{self.created} {self.method} {self.requester} ID: {self.request_id}'

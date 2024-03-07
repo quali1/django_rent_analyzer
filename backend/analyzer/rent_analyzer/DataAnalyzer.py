@@ -5,6 +5,7 @@ from g4f.client import Client
 
 
 class DataAnalyzer:
+
     @staticmethod
     def extract_numbers(text):
         numbers = re.findall(r'\d+\.*\d*', text)
@@ -17,7 +18,6 @@ class DataAnalyzer:
             apartment['price_per_sqm'] = apartment['price_per_sqm']
 
         sorted_apartments = sorted(apartments, key=lambda x: x['price_per_sqm'])
-
         return sorted_apartments[:amount]
 
     @staticmethod
@@ -31,13 +31,12 @@ class DataAnalyzer:
                 apartments.extend(page_data)
 
         most_profitable = DataAnalyzer.calculate_profitability(apartments, amount)
-        print(type(most_profitable))
         return most_profitable
 
     @staticmethod
     def ai_analyzer(apartments, amount=5):
-        message = f"Не представляйся. Проанализируй рынок квартир на основе предоставленных данных. Укажи {amount} самых выгодных предложений. Отвечай на русском языке. Для каждой квартиры имеются следующие данные: {apartments}"
-
+        print("Data: ", apartments)
+        message = f"Дан список объявлений об аренде квартир. Каждое объявление представлено в виде словаря со следующими ключами:\n- 'price': цена квартиры в злотых\n- 'price_per_sqm': цена за квадратный метр в злотых\n- 'district': район, в котором находится квартира\n- 'rooms': количество комнат в квартире\n- 'area': общая площадь квартиры в квадратных метрах\n- 'floor': этаж, на котором находится квартира\n- 'link': ссылка на объявление\n\nВаша задача - проанализировать эти данные и вывести следующую информацию:\n1. Среднюю цену квартиры в каждом районе.\n2. Среднюю цену за квадратный метр в каждом районе.\n3. Самую дорогую и самую дешевую квартиру.\n4. Ссылку на объявление с самой высокой и самой низкой ценой.\n5. 5 самых выгодных объявлений и ссылка на них.\n Данные: {apartments}"
         print("Sending data to ai")
         client = Client()
         response = client.chat.completions.create(

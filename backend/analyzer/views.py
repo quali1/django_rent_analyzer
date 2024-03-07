@@ -28,10 +28,10 @@ def analyzer_form(request):
             requester = request.user
 
             data = DataAnalyzer.analyze_apartments(path, 20 if method == "ai" else offers_amount)
-            ai_response = DataAnalyzer.ai_analyzer(offers_amount, data) if method == "ai" else None
+            ai_response = DataAnalyzer.ai_analyzer(data, offers_amount) if method == "ai" else None
 
             save_otodom_data_to_database(data, request_id, requester, site, method, ai_response)
-            print(f"{method} analyzer\nRequest id: {request_id}\nRequester: {requester}")
+            print(f"Method: {method} analyzer\nRequest id: {request_id}\nRequester: {requester}")
 
             return redirect('analysis', request_id=request_id)
 

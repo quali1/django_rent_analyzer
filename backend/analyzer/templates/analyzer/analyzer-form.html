@@ -43,6 +43,9 @@
 
                 <button type="submit" class="start-search-button">Начать поиск</button>
             </form>
+            <div id="loading" style="display: none;">
+                <img src="{% static 'src/load-spinner.gif' %}" alt="Загрузка...">
+            </div>
         </div>
     </div>
 
@@ -109,20 +112,19 @@
         });
     </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $('.results-options-section').hide(); // Скрываем секцию при загрузке страницы
-    $('input[type=radio][name=method]').change(function() {
-        if (this.value == 'ai') {
-            $('.results-options-section').slideUp(); // Плавное сворачивание
-        }
-        else if (this.value == 'manual') {
-            $('.results-options-section').slideDown(); // Плавное разворачивание
-        }
-    });
-});
-</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.results-options-section').hide(); // Скрываем секцию при загрузке страницы
+            $('input[type=radio][name=method]').change(function () {
+                if (this.value == 'ai') {
+                    $('.results-options-section').slideUp(); // Плавное сворачивание
+                } else if (this.value == 'manual') {
+                    $('.results-options-section').slideDown(); // Плавное разворачивание
+                }
+            });
+        });
+    </script>
 
 
 {% endblock %}

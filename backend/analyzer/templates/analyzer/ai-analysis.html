@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container ai">
+    <h1 class="ai__title">Результаты анализа объявлений</h1>
+    <div class="ai__output">
+        <span>
+            {{ data.ai_response|linebreaks|urlize }}
+        </span>
+    </div>
+</div>
+{% endblock %}
+
