@@ -3,51 +3,96 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container search">
         <div class="search-container">
-            <form class="analysis-form" method="POST">
-                {% csrf_token %}
-                <h2 class="form-title">Выберите сайт и вариант анализа</h2>
+            <div class="form-slider">
+                <div class="form-slide" id="form1">
+                    <form class="analysis-form" method="POST">
+                        {% csrf_token %}
+                        <h2 class="form-title">Choose a site and analysis option</h2>
 
-                <div class="sites-section">
-                    <div class="site-card">
-                        <input type="radio" id="otodom" name="site" class="site-radio" value="otodom" required>
-                        <label for="otodom" class="site-label">
-                            <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
-                            <p class="site-card__description">otodom</p>
-                        </label>
-                    </div>
-                    <div class="site-card">
-                        <input type="radio" id="site2" name="site" class="site-radio" value="site2" disabled>
-                        <label for="site2" class="site-label">
-                            <img src="site2-logo.png" alt="Site 2 Logo" class="site-card__logo">
-                            <p class="site-card__description">Описание сайта 2</p>
-                        </label>
-                    </div>
-                    <!-- Добавьте карточки для остальных сайтов -->
+                        <div class="sites-section">
+                            <div class="site-card">
+                                <input type="radio" id="otodom" name="site" class="site-radio" value="otodom" required>
+                                <label for="otodom" class="site-label">
+                                    <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
+                                    <p class="site-card__description">otodom</p>
+                                </label>
+                            </div>
+                            <div class="site-card">
+                                <input type="radio" id="site2" name="site" class="site-radio" value="site2" disabled>
+                                <label for="site2" class="site-label">
+                                    <img src="site2-logo.png" alt="Site 2 Logo" class="site-card__logo">
+                                    <p class="site-card__description">Site 2 description</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="analysis-options-section">
+                            <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required>
+                            <label for="ai" class="analysis-label">Analysis using artificial intelligence (beta)</label>
+                            <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">
+                            <label for="manual" class="analysis-label">Analysis using algorithm</label>
+                        </div>
+
+                        <div class="results-options-section">
+                            <label for="offers-amount" class="offers-amount__label">Number of current offers:</label>
+                            <input type="range" id="offers-amount" name="offers-amount" min="1" max="10" value="1"
+                                   class="offers-amount required">
+                            <output for="offers-amount" class="offers-amount__value">1</output>
+                        </div>
+
+                        <button type="submit" class="start-search-button">Start search</button>
+
+                    </form>
+                </div>
+                <div class="form-slide" id="form2" style="display: none;">
+                    <form class="analysis-form" method="POST">
+                        {% csrf_token %}
+                        <h2 class="form-title">Test form</h2>
+
+                        <button type="submit" class="start-search-button">Start search</button>
+
+                    </form>
+
+
+                </div>
+                <div class="buttons">
+                    <button onclick="prevSlide()" class="slide-button"><i class="fas fa-arrow-left"></i></button>
+                    <button onclick="nextSlide()" class="slide-button"><i class="fas fa-arrow-right"></i></button>
                 </div>
 
-                <div class="analysis-options-section">
-                    <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required>
-                    <label for="ai" class="analysis-label">Анализ при помощи искусственного интеллекта (бета)</label>
-                    <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">
-                    <label for="manual" class="analysis-label">Анализ при помощи алгоритма</label>
-                </div>
+            </div>
 
-                <div class="results-options-section">
-                    <label for="offers-amount" class="offers-amount__label">Количество актуальных предложений:</label>
-                    <input type="range" id="offers-amount" name="offers-amount" min="1" max="10" value="1"
-                           class="offers-amount required">
-                    <output for="offers-amount" class="offers-amount__value">1</output>
-                </div>
 
-                <button type="submit" class="start-search-button">Начать поиск</button>
-            </form>
             <div id="loading" style="display: none;">
-                <img src="{% static 'src/load-spinner.gif' %}" alt="Загрузка...">
+                <img src="{% static 'src/load-spinner.gif' %}" alt="Loading...">
             </div>
         </div>
     </div>
+
+    <script>
+        var currentSlide = 0;
+        var formSlides = document.getElementsByClassName('form-slide');
+
+        function showSlide(n) {
+            formSlides[currentSlide].style.display = "none";
+            formSlides[currentSlide].style.transform = "translateX(-100%)";
+            currentSlide = (n + formSlides.length) % formSlides.length;
+            formSlides[currentSlide].style.display = "block";
+            formSlides[currentSlide].style.transform = "translateX(0)";
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        showSlide(currentSlide);
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -115,12 +160,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.results-options-section').hide(); // Скрываем секцию при загрузке страницы
+            $('.results-options-section').hide();
             $('input[type=radio][name=method]').change(function () {
                 if (this.value == 'ai') {
-                    $('.results-options-section').slideUp(); // Плавное сворачивание
+                    $('.results-options-section').slideUp();
                 } else if (this.value == 'manual') {
-                    $('.results-options-section').slideDown(); // Плавное разворачивание
+                    $('.results-options-section').slideDown();
                 }
             });
         });

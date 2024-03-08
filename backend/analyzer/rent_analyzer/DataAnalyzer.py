@@ -13,11 +13,13 @@ class DataAnalyzer:
 
     @staticmethod
     def calculate_profitability(apartments, amount=1):
+        print(apartments)
         for apartment in apartments:
             apartment['price'] = apartment['price']
             apartment['price_per_sqm'] = apartment['price_per_sqm']
 
         sorted_apartments = sorted(apartments, key=lambda x: x['price_per_sqm'])
+        print(sorted_apartments)
         return sorted_apartments[:amount]
 
     @staticmethod

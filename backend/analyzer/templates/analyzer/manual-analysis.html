@@ -1,33 +1,7 @@
-{% extends 'base.html' %}
-
-{#{% block content %}#}
-{#    <header class="header">#}
-{#        <h1 class="header-title">Результаты поиска</h1>#}
-{#    </header>#}
-{##}
-{#    <main class="main">#}
-{#        <section class="results-section">#}
-{##}
-{#            {% for offer in offers %}#}
-{#                <div class="result-card">#}
-{#                    <h2 class="result-card__title">{{ offer.price }}</h2>#}
-{#                    <p class="result-card__description">{{ offer.rooms }} комнаты, {{ offer.area }}#}
-{#                        кв.м., {{ offer.price }} zł</p>#}
-{#                    <p class="result-card__location">Район: {{ offer.district }}</p>#}
-{#                    <a href="{{ offer.link }}" class="result-card__button">Подробнее</a>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{##}
-{#            <!-- Повторяйте блок с карточкой для каждого объявления -->#}
-{#        </section>#}
-{#    </main>#}
-{##}
-{#{% endblock %}#}
-
 {% block content %}
     <header class="header">
-        <h1 class="header-title">Лучшие предложения</h1>
-        <p class="header-subtitle">Самые выгодные предложения, выбранные специально для вас</p>
+        <h1 class="header-title">Best Offers</h1>
+        <p class="header-subtitle">The most profitable offers, specially selected for you</p>
     </header>
 
     <main class="main">
@@ -36,14 +10,13 @@
             {% for offer in offers %}
                 <div class="result-card">
                     <h2 class="result-card__title">{{ offer.price }} zł</h2>
-                    <p class="result-card__description">{{ offer.rooms }} комнаты, {{ offer.area }} кв.м.</p>
-                    <p class="result-card__details">Этаж: {{ offer.floor }}, Год постройки: {{ offer.year }}</p>
-                    <p class="result-card__location">Район: {{ offer.district }}</p>
-                    <a href="{{ offer.link }}" class="result-card__button">Подробнее</a>
+                    <p class="result-card__description">{{ offer.rooms }} rooms, {{ offer.area }} sq.m.</p>
+                    <p class="result-card__details">Floor: {{ offer.floor }}, Year of construction: {{ offer.year }}</p>
+                    <p class="result-card__location">District: {{ offer.district }}</p>
+                    <a href="{{ offer.link }}" class="result-card__button">More details</a>
                 </div>
             {% endfor %}
 
-            <!-- Повторяйте блок с карточкой для каждого объявления -->
         </section>
     </main>
 

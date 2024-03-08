@@ -2,7 +2,7 @@
 
 {% block content %}
     <header class="header">
-        <h1 class="header-title">Профиль пользователя {{ user.username }}</h1>
+        <h1 class="header-title">User Profile {{ user.username }}</h1>
     </header>
 
     <main class="main">
@@ -11,14 +11,15 @@
             {% for request in requests %}
                 <div class="request-card">
                     <h2 class="request-card__title">{{ request.request_id }}</h2>
-                    <p class="request-card__time">Дата запроса: {{ request.created }}</p>
-                    <p class="request-card__settings">Анализированный сайт: {{ request.site }}, Методика анализа: {{ request.method }}</p>
-                    <a href="{% url 'analysis' request.request_id %}" class="request-card__button">Подробнее</a>
+                    <p class="request-card__time">Request date: {{ request.created }}</p>
+                    <p class="request-card__settings">Analyzed site: {{ request.site }}, Analysis method: {{ request.method }}</p>
+                    <a href="{% url 'analysis' request.request_id %}" class="request-card__button">More details</a>
                 </div>
             {% endfor %}
 
-            <!-- Повторяйте блок с карточкой для каждого запроса -->
+            <!-- Repeat the card block for each request -->
         </section>
     </main>
 
 {% endblock %}
+
