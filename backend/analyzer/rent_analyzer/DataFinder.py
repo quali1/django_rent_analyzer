@@ -146,8 +146,7 @@ class DataFinder:
     @staticmethod
     def generate_request_id():
         request_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-
-        random_url = f"(https://example.com/){request_id}?"
+        # random_url = f"(https://example.com/){request_id}?"
 
         return request_id
 

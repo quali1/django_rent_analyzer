@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+
 {% block content %}
     <header class="header">
         <h1 class="header-title">Best Offers</h1>
@@ -14,11 +16,16 @@
                     <p class="result-card__details">Floor: {{ offer.floor }}, Year of construction: {{ offer.year }}</p>
                     <p class="result-card__location">District: {{ offer.district }}</p>
                     <a href="{{ offer.link }}" class="result-card__button">More details</a>
+                    <a href="{% url 'save-offer' offer.article_id %}" class="like-icon"><i class="fas fa-heart"></i></a>
+                    <!-- Иконка лайка рядом с кнопкой "More details" -->
                 </div>
             {% endfor %}
 
+
         </section>
     </main>
+
+
 
 {% endblock %}
 

@@ -68,3 +68,6 @@ def save_otodom_data_to_database(data, request_id, requester, site, method, ai_r
         )
 
         otodom_data.offers.add(offer)
+
+
+

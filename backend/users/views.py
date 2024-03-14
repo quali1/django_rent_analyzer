@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from analyzer.models import OtodomData
+from analyzer.models import Offer
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -53,13 +55,98 @@ def user_logout(request):
     return redirect("home")
 
 
+# def user_profile(request, pk):
+#     sort_value = 'newest'
+#     method_value = None
+#     site_value = None
+#     sort_mapping = {
+#         "newest": ["-created", "Newest First"],
+#         "oldest": ["created", "Oldest First"],
+#     }
+#
+#     user = User.objects.get(id=pk)
+#     requests = OtodomData.objects.filter(requester=user).order_by('-created').all()
+#
+#     if request.method == "POST":
+#         print(request.POST)
+#         sort_value = request.POST.get('sort_value', 'newest')
+#         method_value = request.POST.get('method_value', '')
+#         site_value = request.POST.get('site_value', '')
+#
+#         # requests = OtodomData.objects.filter(method=method_value,
+#         #                                      requester=user,
+#         #                                      site=site_value).order_by(sort_mapping[sort_value][0]).all()
+#
+#         requests = OtodomData.objects.filter(
+#             Q(requester=user)
+#             & Q(site=site_value if site_value else '')
+#             & Q(method=method_value)
+#         ).order_by(sort_mapping[sort_value][0]).all()
+#
+#         print(requests)
+#
+#     context = {
+#         "user": user,
+#         "requests": requests,
+#         "sort_mapping": sort_mapping,
+#         "sort_value": sort_value,
+#         "method_value": method_value,
+#         "site_value": site_value,
+#     }
+#
+#     return render(request, "users/user-profile.html", context)
+
 def user_profile(request, pk):
+    sort_mapping = {
+        "newest": ["-created", "Newest First"],
+        "oldest": ["created", "Oldest First"],
+    }
+    methods = ["ai", "manual"]
+    sites = ["otodom", "site2"]
+
+    sort_value = 'newest'
+    method_value = request.POST.get('method_value', '')
+    site_value = request.POST.get('site_value', '')
+
     user = User.objects.get(id=pk)
-    requests = OtodomData.objects.filter(requester=user).all()
+    requests = OtodomData.objects.filter(requester=user)
+
+    if method_value:
+        requests = requests.filter(method=method_value)
+    if site_value:
+        requests = requests.filter(site=site_value)
+
+    if request.method == "POST":
+        sort_value = request.POST.get('sort_value', 'newest')
+
+    sort_key = '-created' if sort_value == 'newest' else 'created'
+    requests = requests.order_by(sort_key)
 
     context = {
         "user": user,
         "requests": requests,
+        "sort_value": sort_value,
+        "method_value": method_value,
+        "site_value": site_value,
+        "sort_mapping": sort_mapping,
+        "methods": methods,
+        "sites": sites,
     }
 
     return render(request, "users/user-profile.html", context)
+
+
+def save_offer(request, article_id):
+    user = request.user
+    offer = Offer.objects.get(article_id=article_id)
+    user.userprofile.saved_offers.add(offer=offer)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def unsave_offer(request, article_id):
+    user = request.user
+    offer = Offer.objects.get(article_id=article_id)
+    user.userprofile.saved_offers.remove(offer=offer)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
