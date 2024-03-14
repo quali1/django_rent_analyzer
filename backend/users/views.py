@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 
 from analyzer.models import OtodomData
 from analyzer.models import Offer
+from .models import UserProfile
 from django.http import HttpResponseRedirect
 
 
@@ -97,31 +98,46 @@ def user_logout(request):
 #     return render(request, "users/user-profile.html", context)
 
 def user_profile(request, pk):
+    # Mapping for sorting options
     sort_mapping = {
         "newest": ["-created", "Newest First"],
         "oldest": ["created", "Oldest First"],
     }
+
+    # Available methods and sites
     methods = ["ai", "manual"]
     sites = ["otodom", "site2"]
 
+    # Retrieve user and user profile
+    user = User.objects.get(id=pk)
+    user_profile = UserProfile.objects.get(user=user)
+
+    # Retrieve saved offers for the user
+    saved_offers = user_profile.saved_offers.all()
+
+    # Default values
     sort_value = 'newest'
     method_value = request.POST.get('method_value', '')
     site_value = request.POST.get('site_value', '')
 
-    user = User.objects.get(id=pk)
+    # Retrieve requests associated with the user
     requests = OtodomData.objects.filter(requester=user)
 
+    # Filter requests based on method and site values if provided
     if method_value:
         requests = requests.filter(method=method_value)
     if site_value:
         requests = requests.filter(site=site_value)
 
+    # Handle sorting based on POST data
     if request.method == "POST":
         sort_value = request.POST.get('sort_value', 'newest')
 
+    # Set sorting key based on sort_value
     sort_key = '-created' if sort_value == 'newest' else 'created'
     requests = requests.order_by(sort_key)
 
+    # Context data for rendering
     context = {
         "user": user,
         "requests": requests,
@@ -131,6 +147,7 @@ def user_profile(request, pk):
         "sort_mapping": sort_mapping,
         "methods": methods,
         "sites": sites,
+        "saved_offers": saved_offers,
     }
 
     return render(request, "users/user-profile.html", context)
