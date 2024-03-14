@@ -323,15 +323,27 @@ body {
     }
 }
 
-.like-icon {
+.save-icon {
     margin-left: 5px;
     color: #fff;
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
-.like-icon:hover {
+.save-icon:hover {
     margin-left: 5px;
     color: #f31212;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.saved-icon {
+    margin-left: 5px;
+    color: #f31212;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.saved-icon:hover {
+    margin-left: 5px;
+    color: #fff;
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 

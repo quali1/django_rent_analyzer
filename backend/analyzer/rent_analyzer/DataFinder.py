@@ -24,8 +24,6 @@ class DataFinder:
         page = 1
         otodom_article_data = {}
 
-        article_id = 1
-
         while page <= page_limit:
             base_url = f'https://www.otodom.pl/pl/wyniki/wynajem/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?distanceRadius=0&limit=36&daysSinceCreated=1&by=LATEST&direction=DESC&viewType=listing&page={page}'
             response = requests.get(base_url, headers=headers).text
@@ -40,25 +38,24 @@ class DataFinder:
                 page_offer_data = []
 
                 for article in articles_info:
-                    price_element = article.find("span", class_="css-i5x0io ewvgbgo0")
-                    price_per_sqm_element = price_element.find("span", {"class": "css-v14eu1 ewvgbgo1"})
+                    price_element = article.find("span", {"class": "css-1uwck7i e1a3ad6s0"})
+                    print(price_element)
 
-                    # Извлечение числовых значений из строк и преобразование их в целые числа
-                    price_per_sqm_text = price_per_sqm_element.get_text().replace('zł/m²', '').strip()
-                    price_per_sqm = int(re.sub('[^0-9]', '', price_per_sqm_text))
+                    if price_element is None:
+                        continue
 
-                    price_text = price_element.get_text().replace(price_per_sqm_element.get_text(), '').strip()
-                    price = int(re.sub('[^0-9]', '', price_text))
+                    price = int(price_element.text.split("zł")[0].replace("\xa0", "") if "\xa0" in price_element.text.split("zł")[0] else price_element.text.split("zł")[0])
 
-                    district = article.find("p", class_="css-1dvtw4c e1qxnff70").text.split(", ")
+                    district = article.find("p", class_="css-1dvtw4c e12u5vlm0").text.split(", ")
                     district = district[1] if district[2] == "Warszawa" else district[2]
 
-                    article_link = article.find("a", class_="css-16vl3c1 e1njvixn0").get("href")
+                    article_link = article.find("a", {"data-cy": "listing-item-link"}).get("href")
 
-                    article_flat_data = list(article.find("dl", {"class": "css-uki0wd e1jfjthv1"}).find_all("dd"))
+                    article_flat_data = list(article.find("dl", {"class": "css-uki0wd e12r8p6s1"}).find_all("dd"))
 
                     # Извлечение числовых значений из строк и преобразование их в целые числа
                     rooms_text = re.sub('[^0-9]', '', article_flat_data[0].text)
+                    rooms = int(rooms_text)
 
                     # Проверка типа данных для площади (float или int)
                     area_text = article_flat_data[1].text
@@ -68,18 +65,12 @@ class DataFinder:
                         area = int(re.sub('[^0-9]', '', area_text))
 
                     floor_text = re.sub('[^0-9]', '', article_flat_data[2].text) if len(article_flat_data) > 2 else ''
+                    floor = int(floor_text) if floor_text else 0
 
-                    # Преобразование строковых значений в целые числа
-                    rooms = int(rooms_text)
-
-                    # Проверка наличия значения этажа и преобразование его в целое число, если оно указано
-                    if floor_text:
-                        floor = int(floor_text)
-                    else:
-                        floor = 0
+                    price_per_sqm = round(price / area)
 
                     offer_data = {
-                        'article_id': article_id,
+                        'article_id': DataFinder.generate_request_id(),
                         'price': price,
                         'price_per_sqm': price_per_sqm,
                         'district': district,
@@ -88,7 +79,6 @@ class DataFinder:
                         'floor': floor,
                         'link': f'https://www.otodom.pl{article_link}',
                     }
-                    article_id += 1
                     page_offer_data.append(offer_data)
 
                 otodom_article_data[f'page_{page}'] = page_offer_data

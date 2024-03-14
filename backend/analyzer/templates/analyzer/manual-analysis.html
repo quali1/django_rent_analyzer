@@ -16,8 +16,17 @@
                     <p class="result-card__details">Floor: {{ offer.floor }}, Year of construction: {{ offer.year }}</p>
                     <p class="result-card__location">District: {{ offer.district }}</p>
                     <a href="{{ offer.link }}" class="result-card__button">More details</a>
-                    <a href="{% url 'save-offer' offer.article_id %}" class="like-icon"><i class="fas fa-heart"></i></a>
-                    <!-- Иконка лайка рядом с кнопкой "More details" -->
+                    {% if request.user.is_authenticated %}
+                        {% if offer.article_id in saved_offers %}
+                            <a href="{% url 'remove-offer' offer.article_id %}" class="saved-icon"><i
+                                    class="fa-regular fa-bookmark"></i></a>
+                        {% else %}
+                            <a href="{% url 'save-offer' offer.article_id %}" class="save-icon"><i
+                                    class="fa-regular fa-bookmark"></i></a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}" class="save-icon"><i class="fa-regular fa-bookmark"></i></a>
+                    {% endif %}
                 </div>
             {% endfor %}
 

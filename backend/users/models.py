@@ -9,7 +9,7 @@ from analyzer.models import Offer
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    saved_offers = models.ManyToManyField(Offer, blank=True)
+    saved_offers = models.ManyToManyField(Offer, blank=True, related_name='saved_offers')
 
     def __str__(self):
         return f"{self.user.username} profile"

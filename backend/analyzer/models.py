@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Offer(models.Model):
-    article_id = models.IntegerField()
+    article_id = models.CharField(max_length=16, unique=True, primary_key=True)
     price = models.IntegerField()
     price_per_sqm = models.IntegerField()
     district = models.CharField(max_length=100)
@@ -11,9 +11,10 @@ class Offer(models.Model):
     area = models.FloatField()
     floor = models.IntegerField()
     link = models.URLField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
-        return f"Offer {self.id}"
+        return f"Offer {self.article_id}"
 
 
 class OtodomData(models.Model):

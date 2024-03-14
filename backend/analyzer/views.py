@@ -6,7 +6,7 @@ from .models import Offer, OtodomData
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-
+from users.models import UserProfile
 # Create your views here.
 
 def home_page(request):
@@ -41,10 +41,13 @@ def analyzer_form(request):
 def display_analysis(request, request_id):
     data = OtodomData.objects.get(request_id=request_id)
     offers = data.offers.all()
-    print("Offers: ", offers)
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    saved_offers_queryset = user_profile.saved_offers.all()
+    saved_offers = [offer.article_id for offer in saved_offers_queryset]
 
     if data.method == 'manual':
-        context = {'offers': offers}
+        context = {'offers': offers, 'saved_offers': saved_offers}
         return render(request, "analyzer/manual-analysis.html", context)
     elif data.method == 'ai':
         context = {"data": data}

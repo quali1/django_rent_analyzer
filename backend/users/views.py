@@ -137,16 +137,16 @@ def user_profile(request, pk):
 
 
 def save_offer(request, article_id):
-    user = request.user
+    user = request.user.userprofile
     offer = Offer.objects.get(article_id=article_id)
-    user.userprofile.saved_offers.add(offer=offer)
+    user.saved_offers.add(offer)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def unsave_offer(request, article_id):
-    user = request.user
+def remove_offer(request, article_id):
+    user = request.user.userprofile
     offer = Offer.objects.get(article_id=article_id)
-    user.userprofile.saved_offers.remove(offer=offer)
+    user.saved_offers.remove(offer)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
