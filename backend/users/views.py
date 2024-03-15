@@ -114,6 +114,7 @@ def user_profile(request, pk):
 
     # Retrieve saved offers for the user
     saved_offers = user_profile.saved_offers.all()
+    articles_id = [offer.article_id for offer in saved_offers]
 
     # Default values
     sort_value = 'newest'
@@ -148,6 +149,7 @@ def user_profile(request, pk):
         "methods": methods,
         "sites": sites,
         "saved_offers": saved_offers,
+        "articles_id": articles_id,
     }
 
     return render(request, "users/user-profile.html", context)

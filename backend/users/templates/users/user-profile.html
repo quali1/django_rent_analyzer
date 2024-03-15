@@ -24,7 +24,7 @@
                             <a href="{{ offer.link }}" class="saved-card__button">More
                                 details</a>
                             {% if request.user == user %}
-                                {% if offer.article_id in saved_offers %}
+                                {% if offer.article_id in articles_id %}
                                     <a href="{% url 'remove-offer' offer.article_id %}" class="saved-icon"><i
                                             class="fa-regular fa-bookmark"></i></a>
                                 {% else %}
