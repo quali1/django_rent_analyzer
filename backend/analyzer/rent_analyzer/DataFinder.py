@@ -14,7 +14,7 @@ from datetime import datetime, date
 class DataFinder:
 
     @staticmethod
-    def otodom_analyzer(page_limit=2):
+    def otodom_analyzer(page_limit=2, base_url=None):
         start_time = time()
         print("Starting data analysis...")
 
@@ -25,7 +25,7 @@ class DataFinder:
         otodom_article_data = {}
 
         while page <= page_limit:
-            base_url = f'https://www.otodom.pl/pl/wyniki/wynajem/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?distanceRadius=0&limit=36&daysSinceCreated=1&by=LATEST&direction=DESC&viewType=listing&page={page}'
+            # base_url = f'https://www.otodom.pl/pl/wyniki/wynajem/mieszkanie/mazowieckie/warszawa/warszawa/warszawa?distanceRadius=0&limit=36&daysSinceCreated=1&by=LATEST&direction=DESC&viewType=listing&page={page}'
             response = requests.get(base_url, headers=headers).text
 
             soup = BeautifulSoup(response, 'lxml')
@@ -94,7 +94,7 @@ class DataFinder:
         return otodom_article_data
 
     @staticmethod
-    def read_data(path):
+    def read_data(path, filters):
         start_time = time()
         print("Starting data reading...")
 
@@ -105,7 +105,9 @@ class DataFinder:
         if not os.path.exists(data_folder_path):
             os.makedirs(data_folder_path)
 
-        otodom_data = DataFinder.otodom_analyzer()
+        url = DataFinder.generate_url(filters)
+
+        otodom_data = DataFinder.otodom_analyzer(base_url=url)
 
         json_total_data = {
             "otodom_data": otodom_data,
@@ -141,8 +143,28 @@ class DataFinder:
         return request_id
 
     @staticmethod
+    def generate_url(filters):
+        room_numbers = {
+            '1': 'ONE',
+            '2': 'TWO',
+            '3': 'THREE',
+            '4': 'FOUR',
+            '5': 'FIVE',
+        }
+
+        selected_rooms = filters['selected_rooms'][0]
+        rooms_str = ''
+
+        if selected_rooms:
+            room_values = [room_numbers[room] for room in selected_rooms.split(',')]
+            rooms_str = '%5B' + '%2C'.join(room_values) + '%5D'
+
+        url = f"https://www.otodom.pl/pl/wyniki/wynajem/mieszkanie/mazowieckie/warszawa?distanceRadius=0&limit=36&daysSinceCreated=1&areaMax={filters['max_area'][0]}&priceMin={filters['min_price'][0]}&priceMax={filters['max_price'][0]}&areaMin={filters['min_area'][0]}&roomsNumber={rooms_str}&by=LATEST&direction=DESC&viewType=listing"
+        return url
+
+    @staticmethod
     def get_request_id(path):
         with open(path["file_path"], 'r') as file:
             request_id = json.loads(file.read())["request_id"]
-
         return request_id
+

@@ -82,16 +82,15 @@ body {
     align-items: center;
     min-height: 50vh;
     color: #e7e7e7;
-    margin-top: 120px;
+    margin-top: 60px;
 }
 
 .analysis-form {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /*max-width: 600px;*/
-    min-width: 600px;
-    min-height: 500px;
+    min-width: 700px;
+    /*min-height: 300px;*/
     width: 100%;
     background-color: #2c2b2b;
 }
@@ -191,7 +190,6 @@ body {
 
 .offers-amount__value {
     display: block;
-
 }
 
 .start-search-button {
@@ -234,6 +232,66 @@ body {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* Стили для формы manual */
+
+.form-title {
+    color: #fff; /* Цвет текста заголовка формы */
+    margin-bottom: 20px; /* Внешний отступ снизу заголовка */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Внешний отступ снизу для группы элементов формы */
+}
+
+.form-group label {
+    color: #fff; /* Цвет текста меток */
+    margin-bottom: 5px; /* Внешний отступ снизу меток */
+}
+
+.form-control {
+    background-color: #555; /* Цвет фона полей ввода */
+    color: #fff; /* Цвет текста в полях ввода */
+    border: none; /* Убираем границы полей ввода */
+    border-radius: 5px; /* Скругление углов полей ввода */
+    padding: 10px; /* Внутренний отступ полей ввода */
+}
+
+.form-control:focus {
+    outline: none; /* Убираем фокусовку на полях ввода */
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* Добавляем свечение при фокусировке */
+}
+
+/* Стили для чекбоксов */
+.form-group--rooms {
+    text-align: center; /* Выравнивание по центру */
+}
+
+.room-option {
+    display: inline-block;
+    width: 40px; /* Размер квадратных блоков */
+    height: 40px; /* Размер квадратных блоков */
+    line-height: 40px; /* Выравнивание по вертикали */
+    background-color: #555;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px; /* Отступы между блоками */
+    transition: box-shadow 0.3s ease; /* Анимация изменения цвета */
+}
+
+.room-option.selected {
+    box-shadow: 0 0 10px 2px #4CAF50; /* Добавление зеленой тени при выборе */
+}
+
+.form-group--rooms-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-primary {
+    margin-top: 10px; /* Отступ между блоком комнат и кнопкой */
 }
 
 /* analysis section */
@@ -301,7 +359,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
 }
-
 
 
 .result-card__action {

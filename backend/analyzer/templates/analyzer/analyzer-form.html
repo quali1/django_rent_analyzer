@@ -9,11 +9,11 @@
                 <div class="form-slide" id="form1">
                     <form class="analysis-form" method="POST">
                         {% csrf_token %}
-                        <h2 class="form-title">Choose a site and analysis option</h2>
+                        <h2 class="form-title">AI analyzer form</h2>
 
                         <div class="sites-section">
                             <div class="site-card">
-                                <input type="radio" id="otodom" name="site" class="site-radio" value="otodom" required>
+                                <input type="radio" id="otodom" name="site" class="site-radio" value="otodom">
                                 <label for="otodom" class="site-label">
                                     <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
                                     <p class="site-card__description">otodom</p>
@@ -28,35 +28,88 @@
                             </div>
                         </div>
 
-                        <div class="analysis-options-section">
-                            <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required>
-                            <label for="ai" class="analysis-label">Analysis using artificial intelligence (beta)</label>
-                            <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">
-                            <label for="manual" class="analysis-label">Analysis using algorithm</label>
+                        {#                        <div class="analysis-options-section">#}
+                        {#                            <input type="radio" id="ai" name="method" class="analysis-radio" value="ai" required>#}
+                        {#                            <label for="ai" class="analysis-label">Analysis using artificial intelligence (beta)</label>#}
+                        {#                            <input type="radio" id="manual" name="method" class="analysis-radio" value="manual">#}
+                        {#                            <label for="manual" class="analysis-label">Analysis using algorithm</label>#}
+                        {#                        </div>#}
+
+                        <button type="submit" name="ai" class="start-search-button">Start analyzer</button>
+
+                    </form>
+                </div>
+
+                <div class="form-slide" id="form2" style="display: none;">
+                    <form class="analysis-form" method="POST">
+                        {% csrf_token %}
+                        <h2 class="form-title">Manual analyzer form</h2>
+
+                        <div class="sites-section">
+                            <div class="site-card">
+                                <input type="radio" id="otodom_manual" name="site" class="site-radio" value="otodom_manual">
+                                <label for="otodom_manual" class="site-label">
+                                    <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
+                                    <p class="site-card__description">otodom</p>
+                                </label>
+                            </div>
+                            <div class="site-card">
+                                <input type="radio" id="site2" name="site" class="site-radio" value="site2" disabled>
+                                <label for="site2" class="site-label">
+                                    <img src="site2-logo.png" alt="Site 2 Logo" class="site-card__logo">
+                                    <p class="site-card__description">Site 2 description</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group--price">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="min_price">Минимальная цена:</label>
+                                    <input type="number" class="form-control" id="min_price" name="min_price">
+                                </div>
+                                <div class="col">
+                                    <label for="max_price">Максимальная цена:</label>
+                                    <input type="number" class="form-control" id="max_price" name="max_price">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group--area">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="min_area">Минимальная площадь:</label>
+                                    <input type="number" class="form-control" id="min_area" name="min_area">
+                                </div>
+                                <div class="col">
+                                    <label for="max_area">Максимальная площадь:</label>
+                                    <input type="number" class="form-control" id="max_area" name="max_area">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group--rooms">
+                            <label>Количество комнат:</label><br>
+                            <div class="room-option" data-value="1">1</div>
+                            <div class="room-option" data-value="2">2</div>
+                            <div class="room-option" data-value="3">3</div>
+                            <div class="room-option" data-value="4">4</div>
+                            <div class="room-option" data-value="5">5</div>
+                            <input type="hidden" id="selected-rooms" name="selected_rooms" value="">
                         </div>
 
                         <div class="results-options-section">
                             <label for="offers-amount" class="offers-amount__label">Number of current offers:</label>
-                            <input type="range" id="offers-amount" name="offers-amount" min="1" max="10" value="1"
+                            <input type="range" id="offers-amount" name="offers-amount" min="1" max="50" value="25"
                                    class="offers-amount required">
-                            <output for="offers-amount" class="offers-amount__value">1</output>
+                            <output for="offers-amount" class="offers-amount__value">25</output>
                         </div>
 
-                        <button type="submit" class="start-search-button">Start search</button>
-
+                        <button type="submit" name="manual" class="btn btn-primary start-search-button">Start analyzer
+                        </button>
                     </form>
                 </div>
-                <div class="form-slide" id="form2" style="display: none;">
-                    <form class="analysis-form" method="POST">
-                        {% csrf_token %}
-                        <h2 class="form-title">Test form</h2>
 
-                        <button type="submit" class="start-search-button">Start search</button>
-
-                    </form>
-
-
-                </div>
                 <div class="buttons">
                     <button onclick="prevSlide()" class="slide-button"><i class="fas fa-arrow-left"></i></button>
                     <button onclick="nextSlide()" class="slide-button"><i class="fas fa-arrow-right"></i></button>
@@ -64,12 +117,42 @@
 
             </div>
 
-
             <div id="loading" style="display: none;">
                 <img src="{% static 'src/load-spinner.gif' %}" alt="Loading...">
             </div>
         </div>
     </div>
+
+    <script>
+
+        // Получаем все блоки комнат
+        const roomOptions = document.querySelectorAll('.room-option');
+        // Получаем скрытое поле для хранения выбранных комнат
+        const selectedRoomsField = document.getElementById('selected-rooms');
+
+        // Добавляем обработчик события для каждого блока
+        roomOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                // Переключаем состояние выбранности комнаты
+                this.classList.toggle('selected');
+                // Обновляем значение скрытого поля с выбранными комнатами
+                updateSelectedRooms();
+            });
+        });
+
+        // Функция для обновления значения скрытого поля с выбранными комнатами
+        function updateSelectedRooms() {
+            const selectedRooms = [];
+            roomOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    selectedRooms.push(option.dataset.value);
+                }
+            });
+            selectedRoomsField.value = selectedRooms.join(',');
+        }
+
+
+    </script>
 
     <script>
         var currentSlide = 0;
@@ -96,80 +179,81 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const siteCards = document.querySelectorAll('.site-card');
-            const analysisLabels = document.querySelectorAll('.analysis-label');
-            const resultsSlider = document.getElementById('offers-amount');
-            const resultsValue = document.querySelector('.offers-amount__value');
-            const startSearchButton = document.querySelector('.start-search-button');
+                const siteCards = document.querySelectorAll('.site-card');
+                const analysisLabels = document.querySelectorAll('.analysis-label');
+                const resultsSlider = document.getElementById('offers-amount');
+                const resultsValue = document.querySelector('.offers-amount__value');
+                const startSearchButton = document.querySelector('.start-search-button');
 
-            function selectCard() {
-                siteCards.forEach(card => {
-                    card.classList.remove('selected');
-                });
-                this.classList.add('selected');
-                updateSearchButtonState();
-            }
-
-            function updateSearchButtonState() {
-                const siteSelected = document.querySelector('.site-card.selected');
-                const analysisSelected = document.querySelector('.analysis-label.selected');
-                const isSliderValid = resultsSlider.checkValidity();
-
-                if (siteSelected && analysisSelected && isSliderValid) {
-                    startSearchButton.classList.remove('disabled');
-                } else {
-                    startSearchButton.classList.add('disabled');
-                }
-            }
-
-            siteCards.forEach(card => {
-                card.addEventListener('click', selectCard);
-            });
-
-            analysisLabels.forEach(label => {
-                label.addEventListener('click', function () {
-                    analysisLabels.forEach(label => {
-                        label.classList.remove('selected');
+                function selectCard() {
+                    siteCards.forEach(card => {
+                        card.classList.remove('selected');
                     });
                     this.classList.add('selected');
                     updateSearchButtonState();
-                });
-            });
+                }
 
-            resultsSlider.addEventListener('input', function () {
-                resultsValue.textContent = this.value;
-                updateSearchButtonState();
-            });
+                function updateSearchButtonState() {
+                    const siteSelected = document.querySelector('.site-card.selected');
 
-            const analysisRadios = document.querySelectorAll('.analysis-radio');
-            analysisRadios.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    analysisLabels.forEach(label => {
-                        label.classList.remove('selected');
-                    });
-                    const labelForRadio = document.querySelector(`label[for=${this.id}]`);
-                    labelForRadio.classList.add('selected');
+                    if (siteSelected) {
+                        startSearchButton.classList.remove('disabled');
+                    } else {
+                        startSearchButton.classList.add('disabled');
+                    }
+                }
+
+                siteCards.forEach(card => {
+                    card.addEventListener('click', selectCard);
                     updateSearchButtonState();
                 });
-            });
 
-            updateSearchButtonState();
-        });
+                analysisLabels.forEach(label => {
+                    label.addEventListener('click', function () {
+                        analysisLabels.forEach(label => {
+                            label.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                    });
+                });
+
+                resultsSlider.addEventListener('input', function () {
+                    resultsValue.textContent = this.value;
+                });
+
+                const analysisRadios = document.querySelectorAll('.analysis-radio');
+                analysisRadios.forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        analysisLabels.forEach(label => {
+                            label.classList.remove('selected');
+                        });
+                        const labelForRadio = document.querySelector(`label[for=${this.id}]`);
+                        labelForRadio.classList.add('selected');
+                        updateSearchButtonState();
+                    });
+                })
+                ;
+
+
+                updateSearchButtonState();
+            }
+        )
+        ;
     </script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.results-options-section').hide();
-            $('input[type=radio][name=method]').change(function () {
-                if (this.value == 'ai') {
-                    $('.results-options-section').slideUp();
-                } else if (this.value == 'manual') {
-                    $('.results-options-section').slideDown();
-                }
-            });
-        });
-    </script>
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
+    {#    <script>#}
+    {#        $(document).ready(function () {#}
+    {#            $('.results-options-section').hide();#}
+    {#            $('input[type=radio][name=method]').change(function () {#}
+    {#                if (this.value == 'ai') {#}
+    {#                    $('.results-options-section').slideUp();#}
+    {#                } else if (this.value == 'manual') {#}
+    {#                    $('.results-options-section').slideDown();#}
+    {#                }#}
+    {#            });#}
+    {#        });#}
+    {#    </script>#}
 
 
 {% endblock %}

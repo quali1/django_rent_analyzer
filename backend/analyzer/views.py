@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from users.models import UserProfile
+
+
 # Create your views here.
 
 def home_page(request):
@@ -16,24 +18,43 @@ def home_page(request):
 @login_required(login_url="login")
 def analyzer_form(request):
     if request.method == "POST":
-        site = request.POST.get('site')
-        method = request.POST.get('method')
-        offers_amount = int(request.POST.get('offers-amount'))
+        if 'ai' in request.POST:
+            site = request.POST.get('site')
 
-        if site == 'otodom':
-            path = DataFinder.get_path()
-            DataFinder.read_data(path)
+            if site == 'otodom' or site == 'otodom_manual':
+                path = DataFinder.get_path()
+                DataFinder.read_data(path)
 
-            request_id = DataFinder.get_request_id(path)
-            requester = request.user
+                request_id = DataFinder.get_request_id(path)
+                requester = request.user
 
-            data = DataAnalyzer.analyze_apartments(path, 20 if method == "ai" else offers_amount)
-            ai_response = DataAnalyzer.ai_analyzer(data, offers_amount) if method == "ai" else None
+                data = DataAnalyzer.analyze_apartments(path, 20)
+                ai_response = DataAnalyzer.ai_analyzer(data, offers_amount)
 
-            save_otodom_data_to_database(data, request_id, requester, site, method, ai_response)
-            print(f"Method: {method} analyzer\nRequest id: {request_id}\nRequester: {requester}")
+                save_otodom_data_to_database(data, request_id, requester, site, method='ai', ai_response=ai_response)
+                print(f"Method: ai analyzer\nRequest id: {request_id}\nRequester: {requester}")
 
-            return redirect('analysis', request_id=request_id)
+                return redirect('analysis', request_id=request_id)
+
+        if 'manual' in request.POST:
+            filters = dict(request.POST)
+            print(filters)
+            site = request.POST.get('site')
+            offers_amount = int(request.POST.get('offers-amount'))
+
+            if site == 'otodom' or site == 'otodom_manual':
+                path = DataFinder.get_path()
+                DataFinder.read_data(path, filters)
+
+                request_id = DataFinder.get_request_id(path)
+                requester = request.user
+
+                data = DataAnalyzer.analyze_apartments(path, offers_amount)
+
+                save_otodom_data_to_database(data, request_id, requester, site, method='manual', ai_response=None)
+                print(f"Method: manual analyzer\nRequest id: {request_id}\nRequester: {requester}")
+
+                return redirect('analysis', request_id=request_id)
 
     return render(request, "analyzer/analyzer-form.html")
 
@@ -71,6 +92,3 @@ def save_otodom_data_to_database(data, request_id, requester, site, method, ai_r
         )
 
         otodom_data.offers.add(offer)
-
-
-
