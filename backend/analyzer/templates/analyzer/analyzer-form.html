@@ -47,7 +47,8 @@
 
                         <div class="sites-section">
                             <div class="site-card">
-                                <input type="radio" id="otodom_manual" name="site" class="site-radio" value="otodom_manual">
+                                <input type="radio" id="otodom_manual" name="site" class="site-radio"
+                                       value="otodom_manual">
                                 <label for="otodom_manual" class="site-label">
                                     <img src="{% static 'src/otodom.png' %}" alt="Site 1 Logo" class="site-card__logo">
                                     <p class="site-card__description">otodom</p>
@@ -65,11 +66,11 @@
                         <div class="form-group form-group--price">
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="min_price">Минимальная цена:</label>
+                                    <label for="min_price">Minimum price:</label>
                                     <input type="number" class="form-control" id="min_price" name="min_price">
                                 </div>
                                 <div class="col">
-                                    <label for="max_price">Максимальная цена:</label>
+                                    <label for="max_price">Maximum price:</label>
                                     <input type="number" class="form-control" id="max_price" name="max_price">
                                 </div>
                             </div>
@@ -78,18 +79,18 @@
                         <div class="form-group form-group--area">
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="min_area">Минимальная площадь:</label>
+                                    <label for="min_area">Minimum area:</label>
                                     <input type="number" class="form-control" id="min_area" name="min_area">
                                 </div>
                                 <div class="col">
-                                    <label for="max_area">Максимальная площадь:</label>
+                                    <label for="max_area">Maximum area:</label>
                                     <input type="number" class="form-control" id="max_area" name="max_area">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group form-group--rooms">
-                            <label>Количество комнат:</label><br>
+                            <label>Number of rooms:</label><br>
                             <div class="room-option" data-value="1">1</div>
                             <div class="room-option" data-value="2">2</div>
                             <div class="room-option" data-value="3">3</div>
@@ -109,6 +110,7 @@
                         </button>
                     </form>
                 </div>
+
 
                 <div class="buttons">
                     <button onclick="prevSlide()" class="slide-button"><i class="fas fa-arrow-left"></i></button>

@@ -8,21 +8,20 @@
     <div class="container">
         <div class="profile">
             <div class="profile-header">
-                <h1 class="profile-title">Профиль пользователя</h1>
-                <button class="btn btn-primary edit-button">Редактировать</button>
+                <h1 class="profile-title"> </h1>
+                <button class="btn btn-primary edit-button">Edit</button>
             </div>
             <div class="profile-content">
                 <div class="saved section">
-                    <h2 class="section-title">Избранные предложения</h2>
-                    <!-- Здесь будут отображаться избранные предложения -->
+                    <h2 class="section-title">Favorite Offers</h2>
+                    <!-- Here will be displayed favorite offers -->
                     {% for offer in saved_offers %}
                         <div class="saved-card">
                             <h2 class="saved-card__title">{{ offer.price }}</h2>
                             <p class="saved-card__description">{{ offer.rooms }} rooms, {{ offer.area }} sq.m.</p>
                             <p class="saved-card__details">Floor: {{ offer.floor }}</p>
                             <p class="saved-card__location">District: {{ offer.district }}</p>
-                            <a href="{{ offer.link }}" class="saved-card__button">More
-                                details</a>
+                            <a href="{{ offer.link }}" class="saved-card__button">More details</a>
                             {% if request.user == user %}
                                 {% if offer.article_id in articles_id %}
                                     <a href="{% url 'remove-offer' offer.article_id %}" class="saved-icon"><i
@@ -35,8 +34,9 @@
                         </div>
                     {% endfor %}
                 </div>
+
                 <div class="history section">
-                    <h2 class="section-title">История поиска и просмотров</h2>
+                    <h2 class="section-title">Search and Viewing History</h2>
                     <form id="filter-form" method="post">
                         {% csrf_token %}
                         <div class="form-row">
@@ -61,7 +61,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="site">Site:</label>
-                                <select id="method" class="form-control" name="site_value">
+                                <select id="site" class="form-control" name="site_value">
                                     <option value="">-----</option>
                                     {% for site in sites %}
                                         <option value="{{ site }}" {% if site == site_value %}
@@ -70,8 +70,9 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Применить</button>
+                        <button type="submit" class="btn btn-primary">Apply</button>
                     </form>
+
                     <div class="row">
                         <!-- Здесь будут отображаться история поиска и просмотров -->
                         {% for request in requests %}
